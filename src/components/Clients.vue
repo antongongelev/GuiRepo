@@ -56,7 +56,7 @@
                 :items="clients"
                 class="elevation-1">
             <template slot="items" slot-scope="props">
-                <td class="text-xs-center">{{ props.item.id }}</td>
+               <td class="text-xs-center">{{ props.item.id }}</td>
                 <td class="text-xs-center">{{ props.item.firstName }}</td>
                 <td class="text-xs-center">{{ props.item.secondName }}</td>
                 <td class="text-xs-center">{{ props.item.birthDate }}</td>
@@ -94,7 +94,7 @@
                 ],
                 clients: [],
                 Client: {
-                    firstName: '', secondName: '', birthDate: '', passportInfo: '', phoneNumber: '',
+                    id: '', firstName: '', secondName: '', birthDate: '', passportInfo: '', phoneNumber: '',
                     address: '', email: ''
                 },
             }
@@ -106,7 +106,7 @@
         methods: {
             registerClient() {
                 let newClient = {
-
+                    id: this.Client.id,
                     firstName: this.Client.firstName,
                     secondName: this.Client.secondName,
                     birthDate: this.Client.birthDate,
@@ -115,11 +115,16 @@
                     address: this.Client.address,
                     email: this.Client.email
                 };
-
                 this.dialog = false;
                 console.log(newClient);
 
-                this.$axios.post('http://localhost:8090/clients/create', newClient);
+                this.$axios.post('http://localhost:8090/clients/create', newClient)
+                    .then(response => {
+                        console.log(response)
+                    })
+                    .catch(error => {
+                        console.log(error.response)
+                    });
             }
         }
     }
