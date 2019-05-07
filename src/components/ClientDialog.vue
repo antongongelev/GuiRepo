@@ -1,14 +1,5 @@
 <template>
-    <div id="app">
-
-        <v-btn outline
-               small
-               color="#42b983"
-               @click="dialog = !dialog"
-        >
-            Register new client
-        </v-btn>
-
+    <div>
 
         <v-dialog v-model="dialog" persistent max-width="500">
             <v-card>
@@ -50,58 +41,20 @@
             </v-card>
         </v-dialog>
 
-
-        <v-data-table
-                :headers="headers"
-                :items="clients"
-                class="elevation-1">
-            <template slot="items" slot-scope="props">
-                <td class="text-xs-center">{{ props.item.id }}</td>
-                <td class="text-xs-center">{{ props.item.firstName }}</td>
-                <td class="text-xs-center">{{ props.item.secondName }}</td>
-                <td class="text-xs-center">{{ props.item.birthDate }}</td>
-                <td class="text-xs-center">{{ props.item.passportInfo }}</td>
-                <td class="text-xs-center">{{ props.item.phoneNumber }}</td>
-                <td class="text-xs-center">{{ props.item.address }}</td>
-                <td class="text-xs-center">{{ props.item.email }}</td>
-                <td class="text-xs-center ">
-                    <button>{{ props.item.status }}</button>
-                </td>
-            </template>
-        </v-data-table>
     </div>
 </template>
 
 <script>
-
-
     export default {
-
-        name: "Clients",
+        name: "ClientDialog",
         data() {
             return {
                 dialog: false,
-                headers: [
-                    {text: 'Id', value: 'id', align: 'center'},
-                    {text: 'Name', value: 'firstName', align: 'center'},
-                    {text: 'Last Name', value: 'secondName', align: 'center'},
-                    {text: 'Birth date', value: 'birthDate', align: 'center'},
-                    {text: 'Passport', value: 'passportInfo', align: 'center'},
-                    {text: 'Phone number', value: 'phoneNumber', align: 'center'},
-                    {text: 'Address', value: 'address', align: 'center'},
-                    {text: 'Email', value: 'email', align: 'center'},
-                    {text: 'Status', value: 'status', align: 'center'}
-                ],
-                clients: [],
                 client: {
                     id: '', firstName: '', secondName: '', birthDate: '', passportInfo: '', phoneNumber: '',
                     address: '', email: ''
                 },
             }
-        },
-        mounted() {
-            this.$axios.get('http://localhost:8090/clients/get-all')
-                .then(response => this.clients = response.data);
         },
         methods: {
             registerClient() {
@@ -124,8 +77,12 @@
                         this.clients.push(response.data);
                     })
                     .catch(error => console.log(error.response));
+            },
+            openDialog() {
+                this.dialog = true;
             }
         }
+
     }
 </script>
 
