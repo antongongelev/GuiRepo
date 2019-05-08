@@ -1,6 +1,6 @@
 <template>
     <div>
-        <client-dialog ref="createDialog"/>
+        <client-dialog @newClient='newClient' ref="createDialog"></client-dialog>
         <v-btn outline
                small
                color="#42b983"
@@ -32,8 +32,11 @@
 </template>
 
 <script>
+    import ClientDialog from "./ClientDialog";
+
     export default {
         name: "ClientsTable",
+        components: {ClientDialog},
         data() {
             return {
                 headers: [
@@ -54,8 +57,13 @@
             this.$axios.get('http://localhost:8090/clients/get-all')
                 .then(response => this.clients = response.data);
         },
-        openCreateDialog() {
-            this.$refs.ClientDialog.openDialog();
+        methods: {
+            openCreateDialog() {
+                this.$refs.createDialog.openDialog();
+            },
+            newClient(data) {
+                this.clients.push(data);
+            }
         }
 
     }

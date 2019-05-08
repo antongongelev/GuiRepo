@@ -74,7 +74,7 @@
                 this.$axios.post('http://localhost:8090/clients/create', newClient)
                     .then(response => {
                         console.log(response.data);
-                        this.clients.push(response.data);
+                        this.$emit('newClient', response.data);
                     })
                     .catch(error => console.log(error.response));
             },
