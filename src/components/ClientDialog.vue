@@ -3,36 +3,39 @@
         <v-dialog v-model="dialog" persistent max-width="500">
             <v-card>
                 <v-card-title>
-                <span class="headline">{{title}}</span>
+                    <span class="headline">{{title}}</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container grid-list-md>
-                        <v-layout wrap>
-                            <v-flex xs12 sm6>
-                                <v-text-field color="orange" label="First name"
-                                              v-model="client.firstName"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-text-field color="orange" label="Second name"
-                                              v-model="client.secondName"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-text-field color="orange" label="Birth date"
-                                              v-model="client.birthDate"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-text-field color="orange" label="Phone number"
-                                              v-model="client.phoneNumber"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-text-field color="orange" label="Address" v-model="client.address"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-text-field color="orange" label="Email" v-model="client.email"></v-text-field>
-                            </v-flex>
-                        </v-layout>
-                        <v-text-field color="orange" label="Passport" v-model="client.passportInfo"></v-text-field>
-                        <small class="grey--text">{{hint}}</small>
+                        <v-form ref="clientForm">
+                            <v-layout wrap>
+                                <v-flex xs12 sm6>
+                                    <v-text-field color="orange" label="First name"
+                                                  v-model="client.firstName"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6>
+                                    <v-text-field color="orange" label="Second name"
+                                                  v-model="client.secondName"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6>
+                                    <v-text-field color="orange" label="Birth date"
+                                                  v-model="client.birthDate"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6>
+                                    <v-text-field color="orange" label="Phone number"
+                                                  v-model="client.phoneNumber"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6>
+                                    <v-text-field color="orange" label="Address"
+                                                  v-model="client.address"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6>
+                                    <v-text-field color="orange" label="Email" v-model="client.email"></v-text-field>
+                                </v-flex>
+                            </v-layout>
+                            <v-text-field color="orange" label="Passport" v-model="client.passportInfo"></v-text-field>
+                            <small class="grey--text">{{hint}}</small>
+                        </v-form>
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
@@ -50,45 +53,57 @@
         data() {
             return {
                 dialog: false,
-                client: {
-                    id: '', firstName: '', secondName: '', birthDate: '', passportInfo: '', phoneNumber: '',
-                    address: '', email: ''
-                },
+                client: {id: 0},
                 title: '',
                 apply: '',
-                hint: '',
+                hint: ''
             }
         },
         methods: {
             registerClient() {
-                let newClient = {
-                    id: this.client.id,
-                    firstName: this.client.firstName,
-                    secondName: this.client.secondName,
-                    birthDate: this.client.birthDate,
-                    passportInfo: this.client.passportInfo,
-                    phoneNumber: this.client.phoneNumber,
-                    address: this.client.address,
-                    email: this.client.email
-                };
                 this.dialog = false;
-                console.log(newClient);
+                console.log(this.client);
 
-                this.$axios.post('http://localhost:8090/clients/create', newClient)
+                if (this.client.id === 0) {
+                    this.createNewClient();
+                } else {
+                    //TODO: Edit current client
+                }
+            },
+
+            createNewClient() {
+                this.$axios.post('http://localhost:8090/clients/create', this.client)
                     .then(response => {
                         console.log(response.data);
-                        this.$emit('newClient', response.data);
+                        this.$emit('new-client', response.data);
                     })
                     .catch(error => {
                         console.log(error.response);
                         alert("Fields 'Email' and 'Phone number' must be unique");
                     });
             },
-            openDialog() {
+
+            openDialog(isNew, client) {
+                if (isNew) {
+                    this.$refs.clientForm.reset();
+                    this.assignNames('Add new client',
+                        'Add',
+                        'Fill in information about new client');
+                } else {
+                    this.assignNames('Edit client',
+                        'Edit',
+                        'Here you can update information about client');
+
+                    this.client = Object.assign({}, client);
+                }
                 this.dialog = true;
             },
+
+            assignNames(title, apply, hint) {
+                this.title = title;
+                this.apply = apply;
+                this.hint = hint;
+            }
         }
     }
 </script>
-<style scoped>
-</style>
