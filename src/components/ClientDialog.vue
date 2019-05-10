@@ -3,42 +3,47 @@
         <v-dialog v-model="dialog" persistent max-width="500">
             <v-card>
                 <v-card-title>
-                <span class="headline">{{title}}</span>
+                    <span class="headline">{{isNew? 'Add new client' : 'Edit client'}}</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container grid-list-md>
-                        <v-layout wrap>
-                            <v-flex xs12 sm6>
-                                <v-text-field color="orange" label="First name"
-                                              v-model="client.firstName"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-text-field color="orange" label="Second name"
-                                              v-model="client.secondName"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-text-field color="orange" label="Birth date"
-                                              v-model="client.birthDate"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-text-field color="orange" label="Phone number"
-                                              v-model="client.phoneNumber"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-text-field color="orange" label="Address" v-model="client.address"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-text-field color="orange" label="Email" v-model="client.email"></v-text-field>
-                            </v-flex>
-                        </v-layout>
-                        <v-text-field color="orange" label="Passport" v-model="client.passportInfo"></v-text-field>
-                        <small class="grey--text">{{hint}}</small>
+                        <v-form ref="clientForm">
+                            <v-layout wrap>
+                                <v-flex xs12 sm6>
+                                    <v-text-field color="orange" label="First name"
+                                                  v-model="client.firstName"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6>
+                                    <v-text-field color="orange" label="Second name"
+                                                  v-model="client.secondName"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6>
+                                    <v-text-field color="orange" label="Birth date"
+                                                  v-model="client.birthDate"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6>
+                                    <v-text-field color="orange" label="Phone number"
+                                                  v-model="client.phoneNumber"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6>
+                                    <v-text-field color="orange" label="Address"
+                                                  v-model="client.address"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6>
+                                    <v-text-field color="orange" label="Email" v-model="client.email"></v-text-field>
+                                </v-flex>
+                            </v-layout>
+                            <v-text-field color="orange" label="Passport" v-model="client.passportInfo"></v-text-field>
+                            <small class="grey--text">{{isNew? 'Fill in information about new client' :
+                                'Edit information about client with id ' + client.id}}
+                            </small>
+                        </v-form>
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn flat color="black" @click="dialog = false">Cancel</v-btn>
-                    <v-btn flat color="orange" @click="registerClient">{{apply}}</v-btn>
+                    <v-btn flat color="orange" @click="registerClient">{{ isNew? 'Add' : 'Edit'}}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -50,13 +55,8 @@
         data() {
             return {
                 dialog: false,
-                client: {
-                    id: '', firstName: '', secondName: '', birthDate: '', passportInfo: '', phoneNumber: '',
-                    address: '', email: ''
-                },
-                title: '',
-                apply: '',
-                hint: '',
+                client: {},
+                isNew: ''
             }
         },
         methods: {
@@ -81,10 +81,15 @@
                     })
                     .catch(error => {
                         console.log(error.response);
-                        alert("Fields 'Email' and 'Phone number' must be unique");
                     });
             },
-            openDialog() {
+            openDialog(isNew, client) {
+                this.isNew = isNew;
+                if (isNew) {
+                    this.$refs.clientForm.reset();
+                } else {
+                    this.client = client;
+                }
                 this.dialog = true;
             },
         }

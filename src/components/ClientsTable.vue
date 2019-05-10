@@ -54,12 +54,12 @@
                                 <v-icon
                                         color="orange"
                                         class="mr-2"
-                                        @click="editClient"
+                                        @click="editClient(props.item)"
                                 >
                                     edit
                                 </v-icon>
                                 <v-icon
-                                        @click="deleteClient"
+                                        @click="deleteClient(props.item)"
                                 >
                                     delete
                                 </v-icon>
@@ -101,19 +101,13 @@
         },
         methods: {
             addClient() {
-                this.$refs.createDialog.title = 'Add new client';
-                this.$refs.createDialog.apply = 'Add';
-                this.$refs.createDialog.hint = 'Fill in information about new client';
-                this.$refs.createDialog.openDialog();
+                this.$refs.createDialog.openDialog(true, null);
             },
-            newClient(x) {
-                this.clients.push(x);
+            newClient(client) {
+                this.clients.push(client);
             },
-            editClient() {
-                this.$refs.createDialog.title = 'Edit client';
-                this.$refs.createDialog.apply = 'Edit';
-                this.$refs.createDialog.hint = 'Here you can update information about client';
-                this.$refs.createDialog.openDialog();
+            editClient(client) {
+                this.$refs.createDialog.openDialog(false, client);
             },
             deleteClient() {
 
