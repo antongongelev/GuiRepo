@@ -43,7 +43,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn flat color="black" @click="dialog = false">Cancel</v-btn>
-                    <v-btn flat color="orange" @click="registerClient">{{ isNew? 'Add' : 'Edit'}}</v-btn>
+                    <v-btn flat color="orange" @click="registerClient(isNew)">{{ isNew? 'Add' : 'Edit'}}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -60,35 +60,35 @@
             }
         },
         methods: {
-            registerClient() {
-                let newClient = {
-                    id: this.client.id,
-                    firstName: this.client.firstName,
-                    secondName: this.client.secondName,
-                    birthDate: this.client.birthDate,
-                    passportInfo: this.client.passportInfo,
-                    phoneNumber: this.client.phoneNumber,
-                    address: this.client.address,
-                    email: this.client.email
-                };
+            registerClient(isNew) {
                 this.dialog = false;
-                console.log(newClient);
+                console.log(this.client);
+                if (isNew) {
+                    this.$axios.post('http://localhost:8090/clients/create', this.client)
+                        .then(response => {
+                            console.log(response.data);
+                            this.$emit('newClient', response.data);
+                        })
+                        .catch(error => {
+                            console.log(error.response);
+                        });
+                } else {
+                    this.$axios.post('http://localhost:8090/clients/update', this.client)
+                        .then(response => {
+                            this.$emit('newClient', response.data);
+                        })
+                        .catch(error => {
+                            console.log(error.response);
+                        });
+                }
 
-                this.$axios.post('http://localhost:8090/clients/create', newClient)
-                    .then(response => {
-                        console.log(response.data);
-                        this.$emit('newClient', response.data);
-                    })
-                    .catch(error => {
-                        console.log(error.response);
-                    });
             },
             openDialog(isNew, client) {
                 this.isNew = isNew;
                 if (isNew) {
                     this.$refs.clientForm.reset();
                 } else {
-                    this.client = client;
+                    this.client = Object.assign({}, client);
                 }
                 this.dialog = true;
             },

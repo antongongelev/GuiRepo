@@ -104,13 +104,18 @@
                 this.$refs.createDialog.openDialog(true, null);
             },
             newClient(client) {
-                this.clients.push(client);
+                console.log(client);
+                this.$axios.get('http://localhost:8090/clients/get-all')
+                    .then(response => this.clients = response.data);
             },
             editClient(client) {
                 this.$refs.createDialog.openDialog(false, client);
             },
-            deleteClient() {
-
+            deleteClient(client) {
+                this.$axios.post('http://localhost:8090/clients/delete', client)
+                    .then(response => {
+                        this.clients = response.data
+                    })
             },
         }
 
