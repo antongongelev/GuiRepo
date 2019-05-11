@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import ClientsTable from "./components/ClientsTable";
-import Test from "./components/Test";
 
 Vue.use(Router)
 
@@ -19,11 +18,6 @@ export default new Router({
             path: '/clients',
             name: 'clients',
             component: ClientsTable
-        },
-        {
-            path: '/test',
-            name: 'test',
-            component: Test
         },
         {
             path: '/about',

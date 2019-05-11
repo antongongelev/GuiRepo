@@ -1,6 +1,12 @@
 <template>
     <div>
+
         <client-dialog @newClient='newClient' ref="createDialog"></client-dialog>
+        <confirmation-dialog @deleteClient='deleteClient' ref="deleteClient"
+        >
+            <h1 slot="form-header">Are you sure?</h1>
+            <p slot="form-text">Are you sure that you want to delete this client?</p>
+        </confirmation-dialog>
 
         <v-app>
             <div>
@@ -59,7 +65,7 @@
                                     edit
                                 </v-icon>
                                 <v-icon
-                                        @click="deleteClient(props.item)"
+                                        @click="openConfirmDialog(props.item)"
                                 >
                                     delete
                                 </v-icon>
@@ -74,10 +80,11 @@
 
 <script>
     import ClientDialog from "./ClientDialog";
+    import ConfirmationDialog from "./ConfirmationDialog";
 
     export default {
         name: "ClientsTable",
-        components: {ClientDialog},
+        components: {ConfirmationDialog, ClientDialog},
         data() {
             return {
                 search: '',
@@ -103,8 +110,7 @@
             addClient() {
                 this.$refs.createDialog.openDialog(true, null);
             },
-            newClient(client) {
-                console.log(client);
+            newClient() {
                 this.$axios.get('http://localhost:8090/clients/get-all')
                     .then(response => this.clients = response.data);
             },
@@ -117,6 +123,9 @@
                         this.clients = response.data
                     })
             },
+            openConfirmDialog(client) {
+                this.$refs.deleteClient.openConfirmationDialog(client);
+            }
         }
 
     }

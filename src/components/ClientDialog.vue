@@ -62,11 +62,9 @@
         methods: {
             registerClient(isNew) {
                 this.dialog = false;
-                console.log(this.client);
                 if (isNew) {
                     this.$axios.post('http://localhost:8090/clients/create', this.client)
                         .then(response => {
-                            console.log(response.data);
                             this.$emit('newClient', response.data);
                         })
                         .catch(error => {
