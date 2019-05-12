@@ -1,19 +1,22 @@
 <template>
     <div>
-        <v-dialog v-model="confirmationDialog" persistent max-width="500" >
+        <v-dialog v-model="confirmationDialog" persistent max-width="400">
             <v-card>
-            <form>
+                <form>
                     <div id="form-header">
                         <slot name="form-header"></slot>
                     </div>
-                <div id="form-text">
-                    <slot name="form-text"></slot>
-                </div>
-                <v-btn flat color="black" @click="confirmationDialog = false">
-                    Cancel
-                </v-btn>
-                <v-btn flat color="orange" @click="agreeFunction">{{ agree }}</v-btn>
-            </form>
+                    <div id="form-text">
+                        <slot name="form-text"></slot>
+                    </div>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn flat color="black" @click="confirmationDialog = false">
+                            Cancel
+                        </v-btn>
+                        <v-btn flat color="orange" @click="submit">{{ agree }}</v-btn>
+                    </v-card-actions>
+                </form>
             </v-card>
         </v-dialog>
     </div>
@@ -34,7 +37,7 @@
                 this.client = Object.assign({}, client);
                 this.confirmationDialog = true;
             },
-            agreeFunction() {
+            submit() {
                 this.confirmationDialog = false;
                 this.$emit('deleteClient', this.client);
             }
@@ -43,6 +46,6 @@
     }
 </script>
 
-<style scoped>
+<style>
 
 </style>

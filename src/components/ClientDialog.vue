@@ -3,7 +3,7 @@
         <v-dialog v-model="dialog" persistent max-width="500">
             <v-card>
                 <v-card-title>
-                    <span class="headline">{{isNew? 'Add new client' : 'Edit client'}}</span>
+                    <h1>{{isNew? 'Add new client' : 'Edit client'}}</h1>
                 </v-card-title>
                 <v-card-text>
                     <v-container grid-list-md>
@@ -34,9 +34,9 @@
                                 </v-flex>
                             </v-layout>
                             <v-text-field color="orange" label="Passport" v-model="client.passportInfo"></v-text-field>
-                            <small class="grey--text">{{isNew? 'Fill in information about new client' :
+                            <p>{{isNew? 'Fill in information about new client' :
                                 'Edit information about client with id ' + client.id}}
-                            </small>
+                            </p>
                         </v-form>
                     </v-container>
                 </v-card-text>
@@ -83,15 +83,15 @@
             },
             openDialog(isNew, client) {
                 this.isNew = isNew;
+                this.client = Object.assign({}, client);
                 if (isNew) {
                     this.$refs.clientForm.reset();
-                } else {
-                    this.client = Object.assign({}, client);
                 }
                 this.dialog = true;
             },
         }
     }
 </script>
-<style scoped>
+<style>
+
 </style>

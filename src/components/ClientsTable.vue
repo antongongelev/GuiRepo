@@ -5,7 +5,7 @@
         <confirmation-dialog @deleteClient='deleteClient' ref="deleteClient"
         >
             <h1 slot="form-header">Are you sure?</h1>
-            <p slot="form-text">Are you sure that you want to delete this client?</p>
+            <h4 slot="form-text">Are you sure that you want to delete this client?</h4>
         </confirmation-dialog>
 
         <v-app>
@@ -131,6 +131,16 @@
     }
 </script>
 
-<style scoped>
-
+<style >
+    h1{
+        text-align: center;
+        color: orange;
+    }
+    p{
+        text-align: center;
+        color: gray;
+    }
+    h4{
+        text-align: center;
+    }
 </style>
