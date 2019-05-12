@@ -28,9 +28,11 @@
         data() {
             return {
                 confirmationDialog: false,
-                agree: 'Delete',
                 client: {}
             }
+        },
+        props:{
+            agree: String
         },
         methods: {
             openConfirmationDialog(client) {

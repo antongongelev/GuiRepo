@@ -2,7 +2,7 @@
     <div>
 
         <client-dialog @newClient='newClient' ref="createDialog"></client-dialog>
-        <confirmation-dialog @deleteClient='deleteClient' ref="deleteClient"
+        <confirmation-dialog agree="Delete" @deleteClient='deleteClient' ref="deleteClient"
         >
             <h1 slot="form-header">Are you sure?</h1>
             <h4 slot="form-text">Are you sure that you want to delete this client?</h4>
