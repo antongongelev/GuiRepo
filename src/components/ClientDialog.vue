@@ -79,7 +79,6 @@
                             console.log(error.response);
                         });
                 }
-
             },
             openDialog(isNew, client) {
                 this.isNew = isNew;
