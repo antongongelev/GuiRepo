@@ -53,7 +53,6 @@
                             <td class="text-xs-center">{{ props.item.secondName }}</td>
                             <td class="text-xs-center">{{ props.item.birthDate }}</td>
                             <td class="text-xs-center">{{ props.item.passportInfo }}</td>
-                            <td class="text-xs-center">{{ props.item.phoneNumber }}</td>
                             <td class="text-xs-center">{{ props.item.address }}</td>
                             <td class="text-xs-center">{{ props.item.email }}</td>
                             <td class="justify-center layout px-0">
@@ -94,7 +93,6 @@
                     {text: 'Last Name', value: 'secondName', align: 'center'},
                     {text: 'Birth date', value: 'birthDate', align: 'center'},
                     {text: 'Passport', value: 'passportInfo', align: 'center'},
-                    {text: 'Phone number', value: 'phoneNumber', align: 'center'},
                     {text: 'Address', value: 'address', align: 'center'},
                     {text: 'Email', value: 'email', align: 'center'},
                     {text: 'Actions', value: 'name', sortable: false, align: 'center'}
@@ -104,8 +102,12 @@
         },
         mounted() {
             this.$axios.get('http://localhost:8090/clients/get-all')
-                .then(response => this.clients = response.data);
-        },
+                .then(response =>{
+                    this.clients = response.data
+                    console.log(response.data)
+                })
+                },
+
         methods: {
             addClient() {
                 this.$refs.createDialog.openDialog(true, null);

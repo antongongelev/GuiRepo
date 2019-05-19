@@ -22,18 +22,18 @@
                                                   v-model="client.birthDate"></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6>
-                                    <v-text-field color="orange" label="Phone number"
-                                                  v-model="client.phoneNumber"></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 sm6>
                                     <v-text-field color="orange" label="Address"
                                                   v-model="client.address"></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6>
-                                    <v-text-field color="orange" label="Email" v-model="client.email"></v-text-field>
+                                    <v-text-field color="orange" label="Email"
+                                                  v-model="client.email"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm6>
+                                    <v-text-field color="orange" label="Passport"
+                                                  v-model="client.passportInfo"></v-text-field>
                                 </v-flex>
                             </v-layout>
-                            <v-text-field color="orange" label="Passport" v-model="client.passportInfo"></v-text-field>
                             <p>{{isNew? 'Fill in information about new client' :
                                 'Edit information about client with id ' + client.id}}
                             </p>
