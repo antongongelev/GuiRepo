@@ -2,6 +2,9 @@
     <div>
 
         <client-dialog @newClient='newClient' ref="createDialog"></client-dialog>
+
+        <contracts-dialog ref="contractsDialog"></contracts-dialog>
+
         <confirmation-dialog agree="Delete" @deleteClient='deleteClient' ref="deleteClient"
         >
             <h1 slot="form-header">Are you sure?</h1>
@@ -55,6 +58,15 @@
                             <td class="text-xs-center">{{ props.item.passportInfo }}</td>
                             <td class="text-xs-center">{{ props.item.address }}</td>
                             <td class="text-xs-center">{{ props.item.email }}</td>
+
+                            <td class="text-xs-center">
+                                <v-icon color="orange"
+                                        @click="openContracts(props.item.contracts, props.item)"
+                                >
+                                    tab
+                                </v-icon>
+                            </td>
+
                             <td class="justify-center layout px-0">
                                 <v-icon
                                         color="orange"
@@ -80,10 +92,11 @@
 <script>
     import ClientDialog from "./ClientDialog";
     import ConfirmationDialog from "./ConfirmationDialog";
+    import ContractsDialog from "./ContractsDialog";
 
     export default {
         name: "ClientsTable",
-        components: {ConfirmationDialog, ClientDialog},
+        components: {ContractsDialog, ConfirmationDialog, ClientDialog},
         data() {
             return {
                 search: '',
@@ -95,6 +108,7 @@
                     {text: 'Passport', value: 'passportInfo', align: 'center'},
                     {text: 'Address', value: 'address', align: 'center'},
                     {text: 'Email', value: 'email', align: 'center'},
+                    {text: 'Contracts', value: 'name', sortable: false, align: 'center'},
                     {text: 'Actions', value: 'name', sortable: false, align: 'center'}
                 ],
                 clients: [],
@@ -102,13 +116,16 @@
         },
         mounted() {
             this.$axios.get('http://localhost:8090/clients/get-all')
-                .then(response =>{
-                    this.clients = response.data
+                .then(response => {
+                    this.clients = response.data;
                     console.log(response.data)
                 })
-                },
+        },
 
         methods: {
+            openContracts(contracts, client){
+                this.$refs.contractsDialog.openContractsDialog(contracts, client);
+            },
             addClient() {
                 this.$refs.createDialog.openDialog(true, null);
             },
@@ -133,16 +150,18 @@
     }
 </script>
 
-<style >
-    h1{
+<style>
+    h1 {
         text-align: center;
         color: orange;
     }
-    p{
+
+    p {
         text-align: center;
         color: gray;
     }
-    h4{
+
+    h4 {
         text-align: center;
     }
 </style>
