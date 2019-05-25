@@ -3,7 +3,7 @@
         <v-dialog v-model="dialog" persistent max-width="500">
             <v-card>
                 <v-card-title>
-                    <h1>{{isNew? 'Add new client' : 'Edit client'}}</h1>
+                    <h2>{{isNew? 'Add new client' : 'Edit client'}}</h2>
                 </v-card-title>
                 <v-card-text>
                     <v-container grid-list-md>

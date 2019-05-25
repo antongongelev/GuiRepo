@@ -3,12 +3,13 @@
 
         <client-dialog @newClient='newClient' ref="createDialog"></client-dialog>
 
-        <contracts-dialog ref="contractsDialog"></contracts-dialog>
+        <contracts-dialog @newContract='newClient' ref="contractsDialog"></contracts-dialog>
 
         <confirmation-dialog agree="Delete" @deleteClient='deleteClient' ref="deleteClient"
         >
-            <h1 slot="form-header">Are you sure?</h1>
+            <h2 slot="form-header">Are you sure?</h2>
             <h4 slot="form-text">Are you sure that you want to delete this client?</h4>
+            <p slot="form-text">All contracts will be removed</p>
         </confirmation-dialog>
 
         <v-app>
@@ -61,7 +62,7 @@
 
                             <td class="text-xs-center">
                                 <v-icon color="orange"
-                                        @click="openContracts(props.item.contracts, props.item)"
+                                        @click="openContracts(props.item)"
                                 >
                                     tab
                                 </v-icon>
@@ -118,13 +119,12 @@
             this.$axios.get('http://localhost:8090/clients/get-all')
                 .then(response => {
                     this.clients = response.data;
-                    console.log(response.data)
                 })
         },
 
         methods: {
-            openContracts(contracts, client){
-                this.$refs.contractsDialog.openContractsDialog(contracts, client);
+            openContracts(client) {
+                this.$refs.contractsDialog.openContractsDialog(client);
             },
             addClient() {
                 this.$refs.createDialog.openDialog(true, null);
@@ -151,7 +151,7 @@
 </script>
 
 <style>
-    h1 {
+    h2 {
         text-align: center;
         color: orange;
     }
