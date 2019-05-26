@@ -1,12 +1,11 @@
 <template>
     <div>
 
-        <client-dialog @newClient='newClient' ref="createDialog"></client-dialog>
+        <client-dialog @newClient='getClients' ref="createDialog"></client-dialog>
 
-        <contracts-dialog @newContract='newClient' ref="contractsDialog"></contracts-dialog>
+        <contracts-dialog @newContract='getClients' ref="contractsDialog"></contracts-dialog>
 
-        <confirmation-dialog agree="Delete" @deleteClient='deleteClient' ref="deleteClient"
-        >
+        <confirmation-dialog agree="Delete" @deleteClient='deleteClient' ref="deleteClient">
             <h2 slot="form-header">Are you sure?</h2>
             <h4 slot="form-text">Are you sure that you want to delete this client?</h4>
             <p slot="form-text">All contracts will be removed</p>
@@ -129,7 +128,7 @@
             addClient() {
                 this.$refs.createDialog.openDialog(true, null);
             },
-            newClient() {
+            getClients() {
                 this.$axios.get('http://localhost:8090/clients/get-all')
                     .then(response => this.clients = response.data);
             },
@@ -143,7 +142,7 @@
                     })
             },
             openConfirmDialog(client) {
-                this.$refs.deleteClient.openConfirmationDialog(client);
+                this.$refs.deleteClient.openConfirmationDialogForDeletingClient(client);
             }
         }
 

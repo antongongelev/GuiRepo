@@ -14,7 +14,7 @@
             </v-form>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn flat color="black" @click="dialog=false">Close</v-btn>
+                <v-btn flat color="black" @click="close">Close</v-btn>
                 <v-btn flat color="orange" @click="saveNewContract">Save</v-btn>
             </v-card-actions>
         </v-card>
@@ -42,18 +42,25 @@
                 this.client = Object.assign({}, client);
                 this.dialog = true;
             },
+            close() {
+                this.newContract.phoneNumber = '';
+                this.dialog = false;
+            },
             saveNewContract() {
                 this.newContract.client = this.client;
                 this.newContract.tariff = this.tariffs[0]; //TODO: Admin should be able to chose tariff
                 console.log(this.newContract);
                 this.$axios.post('http://localhost:8090/contracts/create', this.newContract)
-                    .then(response => {
-                        this.$emit('newContract', response.data)
-                    })
+                    .then(
+                        this.$emit('newContract')
+                    )
                     .catch(error => {
                         console.log(error.response);
+                    })
+                    .finally(() => {
+                        this.newContract.phoneNumber = '';
+                        this.dialog = false
                     });
-                this.dialog = false;
             }
         },
         mounted() {

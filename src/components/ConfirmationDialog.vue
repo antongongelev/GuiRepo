@@ -28,20 +28,32 @@
         data() {
             return {
                 confirmationDialog: false,
-                client: {}
+                client: {},
+                contract: {},
+                boolean: {}
             }
         },
-        props:{
+        props: {
             agree: String
         },
         methods: {
-            openConfirmationDialog(client) {
+            openConfirmationDialogForDeletingClient(client) {
+                this.boolean = true;
                 this.client = Object.assign({}, client);
                 this.confirmationDialog = true;
             },
+            openConfirmationDialogForDeletingContract(contract) {
+                this.boolean = false;
+                this.contract = Object.assign({}, contract);
+                this.confirmationDialog = true;
+            },
             submit() {
+                if (this.boolean) {
+                    this.$emit('deleteClient', this.client);
+                } else {
+                    this.$emit('deleteContract', this.contract);
+                }
                 this.confirmationDialog = false;
-                this.$emit('deleteClient', this.client);
             }
 
         }
